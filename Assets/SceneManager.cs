@@ -10,9 +10,8 @@ public class SceneManager : MonoBehaviour
     [SerializeField] private GameObject m_game_UI = null;
     [SerializeField] private InputField m_userNameInput = null;
     [SerializeField] private Text m_maxScored = null;
-
+    [SerializeField] public Button startButton = null;
     public Text counterText;
-    public Button startButton;
     private int clickCount;
     private bool counting;
     private float timer = 10f;
@@ -31,18 +30,14 @@ public class SceneManager : MonoBehaviour
             m_game_UI.SetActive(true);
         }
     }
-
+    /**
+     * Devuelte la maxiuma puntuación del usuario cuando ingresas el username, si no existe el usuario, lo crea.
+     */
     IEnumerator getUserId(string username) {
-        // URL de la API
+
         string url = "http://localhost:3000/users/" + username;
-
-        // Crea la solicitud GET a la API
         UnityWebRequest request = UnityWebRequest.Get(url);
-
-        // Envía la solicitud a la API y espera la respuesta
         yield return request.SendWebRequest();
-
-        // Verifica si ocurrió algún error en la solicitud
         if (request.isNetworkError || request.isHttpError)
         {
             Debug.LogError(request.error);
@@ -56,18 +51,14 @@ public class SceneManager : MonoBehaviour
         }
     }
 
+    /**
+     * Recupera la mayor puntución de un usuario pasando la id.
+     */
     IEnumerator getMaxScore(string id)
     {
-        // URL de la API
         string url = "http://localhost:3000/scores/" + id;
-
-        // Crea la solicitud GET a la API
         UnityWebRequest request = UnityWebRequest.Get(url);
-
-        // Envía la solicitud a la API y espera la respuesta
         yield return request.SendWebRequest();
-
-        // Verifica si ocurrió algún error en la solicitud
         if (request.isNetworkError || request.isHttpError)
         {
             Debug.LogError(request.error);
@@ -78,19 +69,14 @@ public class SceneManager : MonoBehaviour
         }
     }
 
+    /**
+     * Si el score es mayor que el record de este usuario, lo guardará en la base de datos.
+     */
     IEnumerator setNewScore()
     {
-
-            // URL de la API
             string url = "http://localhost:3000/scores/" + user_Id + "/" + counterText.text;
-            // Crea la solicitud GET a la API
             UnityWebRequest request = UnityWebRequest.Get(url);
-
-            // Envía la solicitud a la API y espera la respuesta
             yield return request.SendWebRequest();
-
-
-            // Verifica si ocurrió algún error en la solicitud
             if (request.isNetworkError || request.isHttpError)
             {
                 Debug.LogError(request.error);
@@ -100,7 +86,6 @@ public class SceneManager : MonoBehaviour
                 Debug.Log(request.downloadHandler.text);
             }
     }
-
 
     void Start()
     {
@@ -128,7 +113,7 @@ public class SceneManager : MonoBehaviour
         }
     }
 
-    void StartCounting()
+    public void StartCounting()
     {
         clickCount = 0;
         counting = true;

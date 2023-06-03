@@ -25,7 +25,7 @@ public class SceneManager : MonoBehaviour
     public void SubmitLogin() {
         if (m_userNameInput.text != "") {
             StartCoroutine(getUserId(m_userNameInput.text));
-            counterText.text = "Clicks: 0";
+            counterText.text = "0";
             m_login_UI.SetActive(false);
             m_game_UI.SetActive(true);
         }
